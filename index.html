@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0a2a2a">
+<title>1000 Day Challenge</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #071c1c;
+  --bg2:       #0d2626;
+  --bg3:       #122e2e;
+  --card:      #0f2828;
+  --border:    rgba(56,178,172,0.12);
+  --border2:   rgba(56,178,172,0.22);
+  --teal:      #2dd4c4;
+  --teal2:     #1aab9b;
+  --teal3:     #0d7a6e;
+  --teal-bg:   rgba(45,212,196,0.08);
+  --teal-bg2:  rgba(45,212,196,0.15);
+  --cyan:      #67e8f9;
+  --cyan-bg:   rgba(103,232,249,0.08);
+  --sage:      #6ee7b7;
+  --sage-bg:   rgba(110,231,183,0.08);
+  --amber:     #fbbf24;
+  --amber-bg:  rgba(251,191,36,0.1);
+  --red:       #f87171;
+  --red-bg:    rgba(248,113,113,0.1);
+  --blue:      #60a5fa;
+  --blue-bg:   rgba(96,165,250,0.1);
+  --purple:    #a78bfa;
+  --purple-bg: rgba(167,139,250,0.1);
+  --text:      #e2f8f6;
+  --text2:     #7abfb8;
+  --text3:     #3d7a74;
+  --gold:      #f0c060;
+  --r:         14px;
+  --r-sm:      9px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{font-size:15px;scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Outfit',sans-serif;
+  min-height:100vh;
+  max-width:480px;
+  margin:0 auto;
+  padding-bottom:90px;
+  position:relative;
+  overflow-x:hidden;
+}
+
+/* Ambient glow background */
+body::before{
+  content:'';
+  position:fixed;
+  top:-100px;left:-100px;
+  width:400px;height:400px;
+  background:radial-gradient(circle,rgba(45,212,196,0.06) 0%,transparent 70%);
+  pointer-events:none;
+  z-index:0;
+}
+body::after{
+  content:'';
+  position:fixed;
+  bottom:-50px;right:-50px;
+  width:300px;height:300px;
+  background:radial-gradient(circle,rgba(103,232,249,0.04) 0%,transparent 70%);
+  pointer-events:none;
+  z-index:0;
+}
+
+/* Topbar */
+.topbar{
+  padding:18px 20px 14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:0.5px solid var(--border);
+  position:sticky;top:0;
+  background:rgba(7,28,28,0.95);
+  backdrop-filter:blur(12px);
+  z-index:100;
+}
+.logo{
+  font-size:18px;font-weight:800;
+  letter-spacing:-0.5px;
+  background:linear-gradient(135deg,var(--teal),var(--cyan));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.logo-sub{font-size:10px;color:var(--text3);font-weight:400;margin-top:1px;-webkit-text-fill-color:var(--text3)}
+.day-badge{
+  background:var(--teal-bg2);
+  border:0.5px solid var(--teal3);
+  border-radius:20px;
+  padding:6px 14px;
+  text-align:center;
+}
+.day-num{font-size:16px;font-weight:800;color:var(--teal);line-height:1;font-family:'DM Mono',monospace}
+.day-lbl{font-size:9px;color:var(--text3);margin-top:2px;font-weight:500;letter-spacing:.05em}
+
+/* Score card */
+.score-card{
+  margin:16px 20px 12px;
+  background:linear-gradient(135deg,var(--bg3) 0%,rgba(13,122,110,0.2) 100%);
+  border:0.5px solid var(--border2);
+  border-radius:var(--r);
+  padding:16px 18px;
+  position:relative;
+  overflow:hidden;
+}
+.score-card::before{
+  content:'';
+  position:absolute;top:-30px;right:-30px;
+  width:120px;height:120px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(45,212,196,0.1),transparent 70%);
+}
+.score-row{display:flex;align-items:center;gap:16px}
+.score-ring{
+  width:70px;height:70px;flex-shrink:0;
+  position:relative;
+}
+.score-ring svg{transform:rotate(-90deg)}
+.score-ring-center{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+}
+.score-num{font-family:'DM Mono',monospace;font-size:20px;font-weight:500;color:var(--teal);line-height:1}
+.score-denom{font-size:9px;color:var(--text3)}
+.score-info{flex:1}
+.score-level{font-size:15px;font-weight:700;color:var(--text)}
+.score-streak{font-size:12px;color:var(--teal);margin-top:3px;font-weight:500}
+.score-date{font-size:10px;color:var(--text3);margin-top:2px}
+.stat-row{display:flex;gap:8px;margin-top:12px}
+.stat-box{
+  flex:1;background:rgba(45,212,196,0.06);
+  border:0.5px solid var(--border);
+  border-radius:var(--r-sm);
+  padding:8px;text-align:center;
+}
+.stat-val{font-size:15px;font-weight:700;color:var(--text);font-family:'DM Mono',monospace}
+.stat-lbl{font-size:9px;color:var(--text3);margin-top:2px;letter-spacing:.03em}
+
+/* Quote */
+.quote{
+  margin:0 20px 14px;
+  padding:10px 14px;
+  border-left:2px solid var(--teal3);
+  background:var(--teal-bg);
+  border-radius:0 var(--r-sm) var(--r-sm) 0;
+}
+.quote p{font-size:12px;color:var(--text2);font-style:italic;line-height:1.55}
+.quote small{font-size:10px;color:var(--text3);display:block;margin-top:4px}
+
+/* Nav pills */
+.nav{
+  display:flex;gap:6px;padding:0 20px 14px;
+  overflow-x:auto;scrollbar-width:none;
+}
+.nav::-webkit-scrollbar{display:none}
+.nav-btn{
+  flex-shrink:0;padding:7px 18px;
+  border-radius:20px;
+  border:0.5px solid var(--border2);
+  background:transparent;
+  color:var(--text2);font-size:12px;font-weight:500;
+  font-family:'Outfit',sans-serif;
+  cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.nav-btn.active{
+  background:var(--teal);
+  border-color:var(--teal);
+  color:var(--bg);font-weight:700;
+}
+
+/* Sections */
+.tab-pane{display:none;animation:fadeIn .2s ease}
+.tab-pane.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.section{padding:0 20px;margin-bottom:18px}
+.sec-label{
+  font-size:10px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--text3);
+  margin-bottom:10px;display:flex;align-items:center;gap:8px;
+}
+.sec-label::after{content:'';flex:1;height:0.5px;background:var(--border)}
+
+/* Stream tags */
+.stream-tag{
+  display:inline-block;font-size:9px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 9px;border-radius:6px;margin-bottom:10px;
+}
+.s-personal{background:var(--purple-bg);color:var(--purple);border:0.5px solid var(--purple)}
+.s-agri{background:var(--amber-bg);color:var(--amber);border:0.5px solid var(--amber)}
+.s-jk{background:var(--teal-bg2);color:var(--teal);border:0.5px solid var(--teal3)}
+
+/* Cards */
+.card{
+  background:var(--card);
+  border:0.5px solid var(--border);
+  border-radius:var(--r);
+  padding:16px;margin-bottom:10px;
+}
+
+/* Habit blocks */
+.habit{margin-bottom:14px}
+.habit:last-child{margin-bottom:0}
+.habit-label{
+  font-size:13px;font-weight:500;color:var(--text);
+  margin-bottom:8px;display:flex;align-items:center;gap:6px;
+}
+.habit-label .kn{font-size:10px;color:var(--text3);font-style:italic;font-weight:400}
+.divider{height:0.5px;background:var(--border);margin:14px 0}
+
+/* Chips */
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{
+  padding:6px 14px;border-radius:20px;
+  border:0.5px solid var(--border2);
+  background:var(--bg3);color:var(--text2);
+  font-size:12px;font-weight:500;
+  cursor:pointer;transition:all .15s;
+  font-family:'Outfit',sans-serif;
+  user-select:none;
+}
+.chip:active{transform:scale(.94)}
+.chip.g{background:var(--teal-bg2);border-color:var(--teal);color:var(--teal)}
+.chip.a{background:var(--amber-bg);border-color:var(--amber);color:var(--amber)}
+.chip.r{background:var(--red-bg);border-color:var(--red);color:var(--red)}
+.chip.b{background:var(--blue-bg);border-color:var(--blue);color:var(--blue)}
+.chip.p{background:var(--purple-bg);border-color:var(--purple);color:var(--purple)}
+.chip.c{background:var(--cyan-bg);border-color:var(--cyan);color:var(--cyan)}
+
+/* Note fields */
+.note-block{margin-bottom:12px}
+.note-block:last-child{margin-bottom:0}
+.note-label{
+  font-size:12px;color:var(--text2);font-weight:500;
+  margin-bottom:6px;display:block;
+}
+.note-label .kn{color:var(--text3);font-style:italic;font-weight:400}
+textarea,input[type=text]{
+  width:100%;
+  background:var(--bg3);
+  border:0.5px solid var(--border2);
+  border-radius:var(--r-sm);
+  padding:10px 12px;
+  font-size:13px;color:var(--text);
+  font-family:'Outfit',sans-serif;
+  resize:none;line-height:1.5;
+  outline:none;transition:border-color .2s;
+}
+textarea:focus,input:focus{border-color:var(--teal3)}
+textarea::placeholder,input::placeholder{color:var(--text3)}
+
+/* Save button */
+.save-btn{
+  width:100%;padding:14px;
+  border-radius:var(--r);border:none;
+  background:linear-gradient(135deg,var(--teal2),var(--teal3));
+  color:var(--bg);font-size:15px;font-weight:700;
+  font-family:'Outfit',sans-serif;letter-spacing:.3px;
+  cursor:pointer;margin-top:8px;
+  transition:opacity .15s, transform .1s;
+  box-shadow:0 4px 20px rgba(45,212,196,0.2);
+}
+.save-btn:active{opacity:.85;transform:scale(.98)}
+.save-msg{text-align:center;font-size:12px;color:var(--teal);margin-top:8px;min-height:16px;font-weight:500}
+
+/* Targets */
+.tgt-item{
+  display:flex;align-items:flex-start;
+  gap:12px;padding:11px 0;
+  border-bottom:0.5px solid var(--border);
+}
+.tgt-item:last-child{border-bottom:none}
+.tgt-check{
+  width:24px;height:24px;border-radius:50%;
+  border:1.5px solid var(--border2);
+  background:transparent;cursor:pointer;
+  flex-shrink:0;display:flex;
+  align-items:center;justify-content:center;
+  font-size:13px;margin-top:1px;
+  transition:all .2s;color:var(--bg);
+}
+.tgt-check.done{background:var(--teal);border-color:var(--teal)}
+.tgt-name{font-size:13px;color:var(--text);line-height:1.4}
+.tgt-name.done{text-decoration:line-through;color:var(--text3)}
+.tgt-sub{font-size:10px;color:var(--text3);margin-top:2px}
+.prog-wrap{
+  background:var(--bg3);border-radius:4px;
+  height:5px;margin:6px 0 12px;
+}
+.prog-fill{height:5px;border-radius:4px;transition:width .5s}
+
+/* History */
+.log-entry{
+  background:var(--bg3);border-radius:var(--r-sm);
+  padding:12px 14px;margin-bottom:8px;
+  border:0.5px solid var(--border);
+}
+.log-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.log-date{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace}
+.log-score{
+  font-size:11px;font-weight:700;
+  padding:2px 9px;border-radius:10px;
+  font-family:'DM Mono',monospace;
+}
+.log-badges{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:5px}
+.badge{
+  font-size:10px;padding:2px 7px;
+  border-radius:7px;
+  background:var(--teal-bg);color:var(--teal);
+  border:0.5px solid var(--teal3);font-weight:500;
+}
+.log-lesson{font-size:12px;color:var(--text2);line-height:1.5;font-style:italic}
+
+/* Heatmap */
+.heatmap{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:8px}
+.hm-cell{width:17px;height:17px;border-radius:4px;transition:transform .1s}
+.hm-cell:active{transform:scale(1.3)}
+.hm-legend{display:flex;gap:10px;font-size:10px;color:var(--text3)}
+.hm-legend span{display:flex;align-items:center;gap:4px}
+.hm-sq{width:10px;height:10px;border-radius:2px;display:inline-block}
+
+/* Roadmap */
+.phase-block{
+  border-radius:var(--r);overflow:hidden;
+  border:0.5px solid var(--border);margin-bottom:10px;
+}
+.phase-head{
+  padding:12px 16px;display:flex;
+  align-items:center;gap:10px;
+}
+.phase-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.phase-title{font-size:13px;font-weight:700;color:var(--text)}
+.phase-sub{font-size:10px;color:var(--text3);margin-top:1px}
+.phase-body{padding:10px 16px 14px}
+.phase-item{
+  font-size:12px;color:var(--text2);
+  padding:5px 0;display:flex;gap:8px;line-height:1.4;
+}
+.phase-item::before{content:'→';color:var(--teal3);flex-shrink:0;margin-top:1px}
+
+/* Mission grid */
+.mission-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.mission-box{border-radius:var(--r-sm);padding:12px}
+.mission-title{font-size:12px;font-weight:700;margin-bottom:4px}
+.mission-text{font-size:11px;line-height:1.5;opacity:.8}
+
+/* Bottom nav */
+.bnav{
+  position:fixed;bottom:0;left:50%;
+  transform:translateX(-50%);
+  width:100%;max-width:480px;
+  background:rgba(7,28,28,0.97);
+  backdrop-filter:blur(16px);
+  border-top:0.5px solid var(--border);
+  display:flex;padding:10px 0 20px;
+  z-index:200;
+}
+.bnav-btn{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;gap:3px;
+  border:none;background:transparent;
+  cursor:pointer;color:var(--text3);
+  font-size:9px;font-weight:600;
+  font-family:'Outfit',sans-serif;
+  letter-spacing:.04em;text-transform:uppercase;
+  transition:color .15s;padding:4px 0;
+}
+.bnav-btn.active{color:var(--teal)}
+.bnav-icon{font-size:22px;line-height:1}
+
+/* Setup overlay */
+.setup-overlay{
+  position:fixed;inset:0;
+  background:rgba(7,28,28,0.97);
+  z-index:500;display:flex;
+  align-items:center;justify-content:center;
+  padding:30px;
+}
+.setup-box{
+  background:var(--card);
+  border:0.5px solid var(--border2);
+  border-radius:var(--r);padding:28px 24px;
+  width:100%;max-width:400px;
+}
+.setup-title{
+  font-size:18px;font-weight:800;
+  background:linear-gradient(135deg,var(--teal),var(--cyan));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;margin-bottom:6px;
+}
+.setup-sub{font-size:12px;color:var(--text2);margin-bottom:20px;line-height:1.5}
+.setup-label{font-size:11px;color:var(--text2);font-weight:600;margin-bottom:6px;display:block}
+.setup-input{
+  width:100%;background:var(--bg3);
+  border:0.5px solid var(--border2);
+  border-radius:var(--r-sm);
+  padding:10px 12px;font-size:13px;
+  color:var(--text);font-family:'Outfit',sans-serif;
+  outline:none;margin-bottom:16px;
+}
+.setup-input:focus{border-color:var(--teal3)}
+.setup-btn{
+  width:100%;padding:13px;
+  border-radius:var(--r-sm);border:none;
+  background:linear-gradient(135deg,var(--teal2),var(--teal3));
+  color:var(--bg);font-size:14px;font-weight:700;
+  font-family:'Outfit',sans-serif;cursor:pointer;
+}
+.setup-skip{
+  display:block;text-align:center;
+  font-size:11px;color:var(--text3);
+  margin-top:12px;cursor:pointer;
+  text-decoration:underline;
+}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<!-- SETUP OVERLAY -->
+<div class="setup-overlay" id="setup-overlay">
+  <div class="setup-box">
+    <div class="setup-title">1000 Day Challenge</div>
+    <div class="setup-sub">Connect your Google Sheet to save all entries safely — data will never be lost even if you clear your browser.</div>
+    <span class="setup-label">Paste your Google Apps Script Web App URL</span>
+    <input class="setup-input" id="script-url" placeholder="https://script.google.com/macros/s/..." />
+    <div style="font-size:11px;color:var(--text3);margin-bottom:16px;line-height:1.6">
+      Don't have this yet? Tap "Use local storage" below and I'll guide you to set up the Google Sheets connection later.
+    </div>
+    <button class="setup-btn" onclick="connectSheet()">Connect Google Sheet</button>
+    <span class="setup-skip" onclick="skipSetup()">Use local storage for now</span>
+  </div>
+</div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div>
+    <div class="logo">1000 Day Challenge</div>
+    <div class="logo-sub" id="top-date">Loading...</div>
+  </div>
+  <div class="day-badge">
+    <div class="day-num" id="day-num">—</div>
+    <div class="day-lbl">of 1000</div>
+  </div>
+</div>
+
+<!-- SCORE CARD -->
+<div class="score-card">
+  <div class="score-row">
+    <div class="score-ring">
+      <svg width="70" height="70" viewBox="0 0 70 70">
+        <circle cx="35" cy="35" r="30" fill="none" stroke="rgba(45,212,196,0.12)" stroke-width="5"/>
+        <circle cx="35" cy="35" r="30" fill="none" stroke="url(#scoreGrad)" stroke-width="5"
+          stroke-linecap="round" stroke-dasharray="188.5"
+          id="score-arc" stroke-dashoffset="188.5"/>
+        <defs>
+          <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#2dd4c4"/>
+            <stop offset="100%" stop-color="#67e8f9"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <div class="score-ring-center">
+        <div class="score-num" id="sc-num">0</div>
+        <div class="score-denom">/100</div>
+      </div>
+    </div>
+    <div class="score-info">
+      <div class="score-level" id="sc-level">Bija 🌱</div>
+      <div class="score-streak" id="sc-streak">0 day streak 🔥</div>
+      <div class="score-date" id="sc-date"></div>
+    </div>
+  </div>
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-val" id="sm-days">0</div><div class="stat-lbl">Days logged</div></div>
+    <div class="stat-box"><div class="stat-val" id="sm-avg">0</div><div class="stat-lbl">Avg score</div></div>
+    <div class="stat-box"><div class="stat-val" id="sm-yoga">0%</div><div class="stat-lbl">Yoga rate</div></div>
+    <div class="stat-box"><div class="stat-val" id="sm-best">0</div><div class="stat-lbl">Best score</div></div>
+  </div>
+</div>
+
+<!-- QUOTE -->
+<div class="quote">
+  <p id="q-text"></p>
+  <small id="q-attr"></small>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button class="nav-btn active" onclick="showTab('log')">Log Today</button>
+  <button class="nav-btn" onclick="showTab('targets')">Targets</button>
+  <button class="nav-btn" onclick="showTab('jivakalpa')">Jivakalpa</button>
+  <button class="nav-btn" onclick="showTab('history')">History</button>
+  <button class="nav-btn" onclick="showTab('settings')">⚙️ Settings</button>
+</div>
+
+<!-- ══ TAB: LOG ══ -->
+<div id="tab-log" class="tab-pane active">
+
+  <div class="section">
+    <div class="sec-label">Personal Habits</div>
+    <div class="card">
+      <div class="stream-tag s-personal">Personal</div>
+
+      <div class="habit">
+        <div class="habit-label">Yoga <span class="kn">ಯೋಗ</span></div>
+        <div class="chips">
+          <div class="chip" onclick="chip(this,'yoga','done','g')">Done ✓</div>
+          <div class="chip" onclick="chip(this,'yoga','missed','r')">Missed</div>
+          <div class="chip" onclick="chip(this,'yoga','rest','a')">Rest day</div>
+        </div>
+      </div><div class="divider"></div>
+
+      <div class="habit">
+        <div class="habit-label">Meditation <span class="kn">ಧ್ಯಾನ</span></div>
+        <div class="chips">
+          <div class="chip" onclick="chip(this,'meditation','done','g')">Done</div>
+          <div class="chip" onclick="chip(this,'meditation','skipped','r')">Skipped</div>
+        </div>
+      </div><div class="divider"></div>
+
+      <div class="habit">
+        <div class="habit-label">Reading <span class="kn">ಓದು</span></div>
+        <div class="chips">
+          <div class="chip" onclick="chip(this,'reading','1hr+','g')">1 hr+</div>
+          <div class="chip" onclick="chip(this,'reading','30min','a')">30 min</div>
+          <div class="chip" onclick="chip(this,'reading','none','r')">None</div>
+        </div>
+      </div><div class="divider"></div>
+
+      <div class="habit">
+        <div class="habit-label">Sleep last night <span class="kn">ನಿದ್ದೆ</span></div>
+        <div class="chips">
+          <div class="chip" onclick="chip(this,'sleep','good','g')">Good 7h+</div>
+          <div class="chip" onclick="chip(this,'sleep','ok','a')">Ok 5-7h</div>
+          <div class="chip" onclick="chip(this,'sleep','poor','r')">Poor</div>
+        </div>
+      </div><div class="divider"></div>
+
+      <div class="habit">
+        <div class="habit-label">Eating <span class="kn">ಆಹಾರ</span></div>
+        <div class="chips">
+          <div class="chip" onclick="chip(this,'eating','clean','g')">Clean</div>
+          <div class="chip" onclick="chip(this,'eating','ok','a')">Ok</div>
+          <div class="chip" onclick="chip(this,'eating','overate','r')">Overate</div>
+        </div>
+      </div><div class="divider"></div>
+
+      <div class="habit">
+        <div class="habit-label">Mood <span class="kn">ಮನಸ್ಥಿತಿ</span></div>
+        <div class="chips">
+          <div class="chip" onclick="chip(this,'mood','calm','g')">Calm</div>
+          <div class="chip" onclick="chip(this,'mood','motivated','b')">Motivated</div>
+          <div class="chip" onclick="chip(this,'mood','anxious','a')">Anxious</div>
+          <div class="chip" onclick="chip(this,'mood','low','r')">Low</div>
+          <div class="chip" onclick="chip(this,'mood','reactive','p')">Reactive</div>
+        </div>
+      </div><div class="divider"></div>
+
+      <div class="habit">
+        <div class="habit-label">Energy <span class="kn">ಶಕ್ತಿ</span></div>
+        <div class="chips">
+          <div class="chip" onclick="chip(this,'energy','high','g')">High ⚡</div>
+          <div class="chip" onclick="chip(this,'energy','medium','a')">Medium</div>
+          <div class="chip" onclick="chip(this,'energy','low','r')">Low</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-label">Agri Business</div>
+    <div class="card">
+      <div class="stream-tag s-agri">Agri Biz</div>
+
+      <div class="habit">
+        <div class="habit-label">Work done today <span class="kn">ವ್ಯಾಪಾರ</span></div>
+        <div class="chips">
+          <div class="chip" onclick="chip(this,'biz','field','g')">Field visit</div>
+          <div class="chip" onclick="chip(this,'biz','sales','g')">Sales/calls</div>
+          <div class="chip" onclick="chip(this,'biz','office','b')">Office</div>
+          <div class="chip" onclick="chip(this,'biz','none','r')">None</div>
+        </div>
+      </div><div class="divider"></div>
+
+      <div class="habit">
+        <div class="habit-label">Networking <span class="kn">ಸಂಪರ್ಕ</span></div>
+        <div class="chips">
+          <div class="chip" onclick="chip(this,'network','new','g')">Met new person</div>
+          <div class="chip" onclick="chip(this,'network','followup','b')">Follow-up</div>
+          <div class="chip" onclick="chip(this,'network','none','r')">None</div>
+        </div>
+      </div><div class="divider"></div>
+
+      <div class="habit">
+        <div class="habit-label">Payment / Cash flow <span class="kn">ಹಣ</span></div>
+        <div class="chips">
+          <div class="chip" onclick="chip(this,'payment','collected','g')">Collected</div>
+          <div class="chip" onclick="chip(this,'payment','sent','b')">Material sent</div>
+          <div class="chip" onclick="chip(this,'payment','pending','a')">Pending</div>
+          <div class="chip" onclick="chip(this,'payment','none','r')">None</div>
+        </div>
+      </div>
+
+      <div class="note-block" style="margin-top:14px">
+        <span class="note-label">Agri biz update <span class="kn">ವ್ಯಾಪಾರ ಟಿಪ್ಪಣಿ</span></span>
+        <textarea id="n-agri" rows="2" placeholder="Sales, visits, deals, orders..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-label">Jivakalpa Pre-work</div>
+    <div class="card">
+      <div class="stream-tag s-jk">Jivakalpa</div>
+
+      <div class="habit">
+        <div class="habit-label">Work done today</div>
+        <div class="chips">
+          <div class="chip" onclick="chip(this,'jk','crm','g')">CRM work</div>
+          <div class="chip" onclick="chip(this,'jk','research','g')">Research</div>
+          <div class="chip" onclick="chip(this,'jk','planning','b')">Planning</div>
+          <div class="chip" onclick="chip(this,'jk','content','c')">Content</div>
+          <div class="chip" onclick="chip(this,'jk','none','r')">None today</div>
+        </div>
+      </div>
+
+      <div class="note-block" style="margin-top:14px">
+        <span class="note-label">Jivakalpa update today</span>
+        <textarea id="n-jk" rows="2" placeholder="CRM progress, Farman, research, planning..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-label">Daily Reflection</div>
+    <div class="card">
+      <div class="note-block">
+        <span class="note-label">Tomorrow's goals <span class="kn">ನಾಳಿನ ಗುರಿ — fill tonight</span></span>
+        <textarea id="n-goals" rows="2" placeholder="What will you attack tomorrow..."></textarea>
+      </div>
+      <div class="note-block">
+        <span class="note-label">What fired you up today? <span class="kn">ಉತ್ಸಾಹ</span></span>
+        <textarea id="n-fire" rows="2" placeholder="What made you feel alive..."></textarea>
+      </div>
+      <div class="note-block">
+        <span class="note-label">What drained you? <span class="kn">ಶಕ್ತಿ ಕಳೆದ</span></span>
+        <textarea id="n-drain" rows="2" placeholder="What pulled you down..."></textarea>
+      </div>
+      <div class="note-block">
+        <span class="note-label">Key lesson today <span class="kn">ಇಂದಿನ ಕಲಿಕೆ</span></span>
+        <textarea id="n-learn" rows="2" placeholder="One thing you will not forget..."></textarea>
+      </div>
+      <div class="note-block">
+        <span class="note-label">Location <span class="kn">ಸ್ಥಳ</span></span>
+        <input type="text" id="n-loc" placeholder="Shikaripura, Bangalore...">
+      </div>
+      <button class="save-btn" onclick="saveEntry()">Save today's log ↗</button>
+      <div class="save-msg" id="save-msg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TAB: TARGETS ══ -->
+<div id="tab-targets" class="tab-pane">
+  <div class="section">
+    <div class="sec-label">Daily Targets</div>
+    <div class="card" id="daily-tgt"></div>
+  </div>
+  <div class="section">
+    <div class="sec-label">Weekly Targets</div>
+    <div class="card" id="weekly-tgt"></div>
+  </div>
+  <div class="section">
+    <div class="sec-label">Monthly Targets</div>
+    <div class="card" id="monthly-tgt"></div>
+  </div>
+  <div class="section">
+    <div class="sec-label">6-Month Mission</div>
+    <div class="mission-grid">
+      <div class="mission-box" style="background:var(--teal-bg);border:0.5px solid var(--teal3)">
+        <div class="mission-title" style="color:var(--teal)">Jivakalpa</div>
+        <div class="mission-text" style="color:var(--teal2)">CRM live · Farman MVP · 5 dealers · Launch Dec 2026</div>
+      </div>
+      <div class="mission-box" style="background:var(--purple-bg);border:0.5px solid var(--purple)">
+        <div class="mission-title" style="color:var(--purple)">Marriage</div>
+        <div class="mission-text" style="color:#c4b5fd">Search actively · Decide by month 6 · Right partner</div>
+      </div>
+      <div class="mission-box" style="background:var(--amber-bg);border:0.5px solid var(--amber)">
+        <div class="mission-title" style="color:var(--amber)">Agri Biz</div>
+        <div class="mission-text" style="color:#fde68a">Consistent revenue · CRM · Kokila + Krishna delegated</div>
+      </div>
+      <div class="mission-box" style="background:var(--blue-bg);border:0.5px solid var(--blue)">
+        <div class="mission-title" style="color:var(--blue)">Self</div>
+        <div class="mission-text" style="color:#bfdbfe">Yoga · Read 1h · Wealth mindset · 150+ network</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TAB: JIVAKALPA ══ -->
+<div id="tab-jivakalpa" class="tab-pane">
+  <div class="section">
+    <div class="sec-label">Vision & Roadmap</div>
+    <div class="phase-block">
+      <div class="phase-head" style="background:rgba(251,191,36,0.08)">
+        <div class="phase-dot" style="background:var(--amber)"></div>
+        <div><div class="phase-title">Phase 0 — Pre-work</div><div class="phase-sub">Now → Dec 2026 · YOU ARE HERE</div></div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-item">CRM system built and running</div>
+        <div class="phase-item">Farman app MVP scoped and started</div>
+        <div class="phase-item">Farmer database — 100+ records</div>
+        <div class="phase-item">Brand identity — Jivakalpa name, logo, presence</div>
+        <div class="phase-item">5+ active dealer relationships locked</div>
+        <div class="phase-item">Agri practical classes — pilot one batch</div>
+        <div class="phase-item">Legal structure decided</div>
+        <div class="phase-item">Marriage — active search and decision</div>
+      </div>
+    </div>
+    <div class="phase-block">
+      <div class="phase-head" style="background:var(--teal-bg)">
+        <div class="phase-dot" style="background:var(--teal)"></div>
+        <div><div class="phase-title">Phase 1 — Launch</div><div class="phase-sub">Dec 2026 → 2027</div></div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-item">Official Jivakalpa launch — product + brand</div>
+        <div class="phase-item">Farman app live — farmer data moat begins</div>
+        <div class="phase-item">Consistent monthly revenue target hit</div>
+        <div class="phase-item">Team: Kokila + Krishna + 1 new hire</div>
+        <div class="phase-item">Content machine — YouTube, FB, WhatsApp auto</div>
+      </div>
+    </div>
+    <div class="phase-block">
+      <div class="phase-head" style="background:var(--blue-bg)">
+        <div class="phase-dot" style="background:var(--blue)"></div>
+        <div><div class="phase-title">Phase 2 — Scale</div><div class="phase-sub">2027 → 2028</div></div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-item">Expand to 3+ districts — Shimoga, DVG, Haveri</div>
+        <div class="phase-item">Growmor-style retail outlet model</div>
+        <div class="phase-item">Bootstrap profitably OR fundraise — your call</div>
+        <div class="phase-item">Agri classes at scale — 100+ farmers trained</div>
+        <div class="phase-item">Pvt Ltd company formation</div>
+      </div>
+    </div>
+    <div class="phase-block">
+      <div class="phase-head" style="background:var(--purple-bg)">
+        <div class="phase-dot" style="background:var(--purple)"></div>
+        <div><div class="phase-title">Phase 3 — Vision</div><div class="phase-sub">2028 → 1000 days & beyond</div></div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-item">Seeding → harvesting full-stack agri platform</div>
+        <div class="phase-item">Farmer data moat — irreplaceable asset</div>
+        <div class="phase-item">Public sector tie-ups — KMF, govt procurement</div>
+        <div class="phase-item">Bootstrap or IPO — your call when you get there</div>
+        <div class="phase-item">K. Ramanagouda — recognised agri entrepreneur</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="sec-label" style="margin-bottom:10px">Core Principles</div>
+      <div class="phase-item" style="padding:5px 0;color:var(--text2)">Emotion ≠ logic. Pause before every big decision.</div>
+      <div class="phase-item" style="padding:5px 0;color:var(--text2)">Business secrets stay secret. Always.</div>
+      <div class="phase-item" style="padding:5px 0;color:var(--text2)">Written agreements for every partnership.</div>
+      <div class="phase-item" style="padding:5px 0;color:var(--text2)">Cash flow over revenue. Maintain buffer stock.</div>
+      <div class="phase-item" style="padding:5px 0;color:var(--text2)">Networking is your biggest leverage.</div>
+      <div class="phase-item" style="padding:5px 0;color:var(--text2)">Morning 4–5 hours = sacred. Deep work only.</div>
+      <div class="phase-item" style="padding:5px 0;color:var(--text2)">Rich is what you have. Wealthy is who you are.</div>
+      <div class="phase-item" style="padding:5px 0;color:var(--text2)">Seeding to public sector. That is the vision.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TAB: HISTORY ══ -->
+<div id="tab-history" class="tab-pane">
+  <div class="section">
+    <div class="sec-label">30-Day Habit Heatmap</div>
+    <div class="card">
+      <div style="font-size:11px;color:var(--text3);margin-bottom:8px">Yoga · Meditation · Reading</div>
+      <div class="heatmap" id="heatmap"></div>
+      <div class="hm-legend">
+        <span><span class="hm-sq" style="background:var(--teal)"></span>All done</span>
+        <span><span class="hm-sq" style="background:var(--amber)"></span>Partial</span>
+        <span><span class="hm-sq" style="background:var(--red)"></span>Missed</span>
+        <span><span class="hm-sq" style="background:var(--bg3)"></span>No data</span>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="sec-label">Recent Entries</div>
+    <div id="history-list">
+      <div style="font-size:13px;color:var(--text3);padding:10px 0">No entries yet. Start logging today!</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ TAB: SETTINGS ══ -->
+<div id="tab-settings" class="tab-pane">
+  <div class="section">
+    <div class="sec-label">Google Sheets Connection</div>
+    <div class="card">
+      <div style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.6">
+        Paste your Google Apps Script Web App URL below to save all entries directly to your 1000-day Google Sheet. Data will never be lost.
+      </div>
+      <div class="note-block">
+        <span class="note-label">Apps Script Web App URL</span>
+        <input type="text" id="settings-url" placeholder="https://script.google.com/macros/s/...">
+      </div>
+      <div id="conn-status" style="font-size:12px;margin:8px 0 12px;min-height:16px"></div>
+      <button class="save-btn" onclick="saveScriptUrl()">Save & Connect</button>
+      <div style="margin-top:12px;padding:12px;background:var(--teal-bg);border-radius:var(--r-sm);border:0.5px solid var(--teal3)">
+        <div style="font-size:11px;font-weight:700;color:var(--teal);margin-bottom:6px;letter-spacing:.05em">HOW TO GET THE URL</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.7">
+          1. Open your 1000-day Google Sheet<br>
+          2. Tap Extensions → Apps Script<br>
+          3. Tap Deploy → Manage Deployments<br>
+          4. Copy the <strong style="color:var(--teal)">Web App URL</strong><br>
+          5. Paste it above and tap Save & Connect
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-label">Connection Status</div>
+    <div class="card">
+      <div id="sheet-status" style="font-size:13px;color:var(--text2);padding:4px 0"></div>
+      <button onclick="testConnection()" style="margin-top:12px;width:100%;padding:10px;border-radius:var(--r-sm);border:0.5px solid var(--border2);background:transparent;color:var(--teal);font-size:13px;font-weight:500;cursor:pointer;font-family:Outfit,sans-serif">Test Connection</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-label">Sync Entries</div>
+    <div class="card">
+      <div style="font-size:13px;color:var(--text2);margin-bottom:12px;line-height:1.6">
+        Tap below to sync all locally saved entries to your Google Sheet at once.
+      </div>
+      <button onclick="syncAll()" style="width:100%;padding:11px;border-radius:var(--r-sm);border:0.5px solid var(--teal3);background:var(--teal-bg);color:var(--teal);font-size:13px;font-weight:600;cursor:pointer;font-family:Outfit,sans-serif">Sync All Local Entries to Sheet</button>
+      <div id="sync-msg" style="text-align:center;font-size:12px;color:var(--teal);margin-top:8px;min-height:16px"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-label">App Info</div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--border)">
+        <span style="font-size:13px;color:var(--text2)">App version</span>
+        <span style="font-size:13px;color:var(--teal);font-weight:500">v2.0</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--border)">
+        <span style="font-size:13px;color:var(--text2)">Journey started</span>
+        <span style="font-size:13px;color:var(--text)">Sep 23, 2025</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--border)">
+        <span style="font-size:13px;color:var(--text2)">Local entries saved</span>
+        <span style="font-size:13px;color:var(--text)" id="local-count">0</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0">
+        <span style="font-size:13px;color:var(--text2)">Sheet connected</span>
+        <span style="font-size:13px;font-weight:600" id="connected-badge">No</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom nav -->
+<div class="bnav">
+  <button class="bnav-btn active" onclick="showTab('log')"><span class="bnav-icon">✏️</span>Log</button>
+  <button class="bnav-btn" onclick="showTab('targets')"><span class="bnav-icon">🎯</span>Targets</button>
+  <button class="bnav-btn" onclick="showTab('jivakalpa')"><span class="bnav-icon">🌱</span>Jivakalpa</button>
+  <button class="bnav-btn" onclick="showTab('history')"><span class="bnav-icon">📊</span>History</button>
+  <button class="bnav-btn" onclick="showTab('settings')"><span class="bnav-icon">⚙️</span>Settings</button>
+</div>
+
+<script>
+const START = new Date('2025-09-23');
+const EKEY  = 'jk_v3_entries';
+const TKEY  = 'jk_v3_targets';
+const SKEY  = 'jk_v3_scripturl';
+
+const QUOTES = [
+  {q:'ಸ್ಥಿರತೆ ಮಾತ್ರ ಗೆಲ್ಲುತ್ತದೆ. Consistency is the only path.',a:'Your own lesson — Day 49'},
+  {q:'When there is emotion, logic leaves. Pause. Then decide.',a:'Your own words — Day 97'},
+  {q:'Rich is what you have. Wealthy is who you are.',a:'Your own log — Day 202'},
+  {q:'The information gap is where your business lives. Stay ahead.',a:'Your insight — Day 75'},
+  {q:'Morning hours are sacred. Create before the world wakes.',a:'Your rule — protect it'},
+  {q:'Work like you did in 10th standard. That is your true capacity.',a:'Your own words — Day 162'},
+  {q:'Never share business secrets. Not even with close friends.',a:'Hard lesson — Day 105'},
+  {q:'ಜ್ಞಾನ ಮಾತ್ರ ನಿಮ್ಮನ್ನು ಮುಂದೆ ಕೊಂಡೊಯ್ಯುತ್ತದೆ. Read every single day.',a:'Jivakalpa mandate'},
+  {q:'Networking is leverage. Every person is a door. Open them.',a:'Lesson from 232 days'},
+  {q:'Seeding to public sector. That is the vision. Never forget it.',a:'Jivakalpa — the long game'},
+];
+
+const D_DAILY = [
+  {id:'d1',text:'Yoga — every morning  |  ಯೋಗ',sub:'ಪ್ರತಿ ದಿನ ಬೆಳಿಗ್ಗೆ',done:false},
+  {id:'d2',text:'Read for 1 hour  |  ಒಂದು ಗಂಟೆ ಓದು',sub:'Learning daily',done:false},
+  {id:'d3',text:'Meditate 10 min  |  ಧ್ಯಾನ',sub:'Morning practice',done:false},
+  {id:'d4',text:'Jivakalpa pre-work (CRM / research)',sub:'Phase 0 progress',done:false},
+  {id:'d5',text:'One agri biz call or field visit',sub:'Business forward',done:false},
+  {id:'d6',text:'Write tomorrow\'s goals tonight  |  ನಾಳಿನ ಗುರಿ',sub:'Plan before sleep',done:false},
+  {id:'d7',text:'Sleep before 11 PM  |  ಬೇಗ ಮಲಗು',sub:'Recovery matters',done:false},
+];
+const D_WEEKLY = [
+  {id:'w1',text:'5+ farmer field visits or calls',sub:'Agri sales & relationships',done:false},
+  {id:'w2',text:'Review finances — personal + Jivakalpa',sub:'ಹಣಕಾಸು ವಿಮರ್ಶೆ',done:false},
+  {id:'w3',text:'Complete one chapter of a book',sub:'ಓದು ಪೂರ್ತಿ',done:false},
+  {id:'w4',text:'Post one content — FB / WA / Insta',sub:'Brand building',done:false},
+  {id:'w5',text:'Payment collection messages sent',sub:'Cash flow forward',done:false},
+  {id:'w6',text:'Jivakalpa CRM update',sub:'Phase 0 progress',done:false},
+  {id:'w7',text:'Weekly review — wins & losses  |  ವಾರದ ವಿಮರ್ಶೆ',sub:'Reflect & recalibrate',done:false},
+];
+const D_MONTHLY = [
+  {id:'m1',text:'Hit agri revenue target',sub:'Cash flow positive',done:false},
+  {id:'m2',text:'Add 10 new contacts to network',sub:'Towards 150–200 goal',done:false},
+  {id:'m3',text:'Attend one workshop or expert meet',sub:'ಜ್ಞಾನ ಅಪ್‌ಗ್ರೇಡ್',done:false},
+  {id:'m4',text:'Health check — self + Amma',sub:'Family first',done:false},
+  {id:'m5',text:'Marriage search — one active step',sub:'6-month mission',done:false},
+  {id:'m6',text:'Jivakalpa milestone review',sub:'Phase 0 checklist',done:false},
+];
+
+let taps={}, entries=[], daily, weekly, monthly, scriptUrl='';
+
+function getToday(){return new Date().toISOString().split('T')[0]}
+function getJourneyDay(){
+  const today = new Date();
+  const start = new Date('2025-09-23');
+  today.setHours(0,0,0,0);
+  start.setHours(0,0,0,0);
+  return Math.floor((today-start)/86400000)+1;
+}
+function getLevel(n){
+  if(n<10)return'Bija 🌱';if(n<30)return'Ankura 🌿';
+  if(n<60)return'Vruksha 🌳';if(n<100)return'Shakti ⚡';
+  if(n<200)return'Yuddha ⚔️';return'Jivakalpa Master 👑';
+}
+
+function calcScore(t,learn){
+  let s=0;
+  if(t.yoga==='done')s+=20;else if(t.yoga==='rest')s+=5;
+  if(t.meditation==='done')s+=15;
+  if(t.reading==='1hr+')s+=15;else if(t.reading==='30min')s+=8;
+  if(t.sleep==='good')s+=10;else if(t.sleep==='ok')s+=5;
+  if(t.eating==='clean')s+=10;else if(t.eating==='ok')s+=5;
+  if(t.biz&&t.biz!=='none')s+=8;
+  if(t.jk&&t.jk!=='none')s+=8;
+  if(t.network&&t.network!=='none')s+=4;
+  if(learn&&learn.length>8)s+=5;
+  return Math.min(s,100);
+}
+
+function chip(el,field,val,cls){
+  el.parentElement.querySelectorAll('.chip').forEach(c=>{c.className='chip'});
+  el.classList.add(cls);taps[field]=val;updateScoreArc();
+}
+
+function updateScoreArc(){
+  const learn=(document.getElementById('n-learn')||{}).value||'';
+  const s=calcScore(taps,learn);
+  document.getElementById('sc-num').textContent=s;
+  const arc=document.getElementById('score-arc');
+  const offset=188.5-(188.5*(s/100));
+  arc.style.strokeDashoffset=offset;
+}
+
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}
+function lsGet(k,fb){try{const v=localStorage.getItem(k);return v?JSON.parse(v):fb}catch(e){return fb}}
+
+function connectSheet(){
+  const url=document.getElementById('script-url').value.trim();
+  if(!url||!url.includes('script.google.com')){
+    alert('Please paste a valid Google Apps Script URL');return;
+  }
+  scriptUrl=url;lsSet(SKEY,url);
+  document.getElementById('setup-overlay').classList.add('hidden');
+  showMsg('Connected to Google Sheets ✓');
+}
+function skipSetup(){
+  document.getElementById('setup-overlay').classList.add('hidden');
+}
+
+async function saveEntry(){
+  const today=getToday();
+  const notes={
+    goals:document.getElementById('n-goals').value,
+    fire:document.getElementById('n-fire').value,
+    drain:document.getElementById('n-drain').value,
+    learn:document.getElementById('n-learn').value,
+    loc:document.getElementById('n-loc').value,
+    agri:document.getElementById('n-agri').value,
+    jk:document.getElementById('n-jk').value,
+  };
+  const score=calcScore(taps,notes.learn);
+  const entry={date:today,taps:{...taps},notes,score,day:getJourneyDay()};
+  const idx=entries.findIndex(e=>e.date===today);
+  if(idx>=0)entries[idx]=entry;else entries.push(entry);
+  entries.sort((a,b)=>b.date.localeCompare(a.date));
+  lsSet(EKEY,entries);
+
+  // Send to Google Sheets if connected
+  if(scriptUrl){
+    try{
+      await fetch(scriptUrl,{
+        method:'POST',
+        mode:'no-cors',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({action:'log',entry})
+      });
+      showMsg('Saved to Google Sheets ✓ 🔥'); clearForm();
+    }catch(e){showMsg('Saved locally ✓ (sheet sync failed)'); clearForm();}
+  }else{
+    showMsg('Saved locally ✓ 🔥 — Connect Google Sheets in settings to backup safely'); clearForm();
+  }
+  renderStats();renderHistory();renderHeatmap();
+}
+
+function showMsg(m){
+  const el=document.getElementById('save-msg');
+  el.textContent=m;setTimeout(()=>el.textContent='',4000);
+}
+
+function toggleTarget(list,id){
+  const item=list.find(t=>t.id===id);
+  if(item)item.done=!item.done;
+  lsSet(TKEY,{daily,weekly,monthly});
+  renderTargets();
+}
+
+function renderStats(){
+  const total=entries.length;
+  document.getElementById('sm-days').textContent=total;
+  document.getElementById('sc-level').textContent=getLevel(total);
+  const today=getToday();
+  const te=entries.find(e=>e.date===today);
+  const sc=te?te.score:calcScore(taps,'');
+  document.getElementById('sc-num').textContent=sc;
+  const arc=document.getElementById('score-arc');
+  arc.style.strokeDashoffset=188.5-(188.5*(sc/100));
+
+  let streak=0,check=today;
+  const dates=entries.map(e=>e.date).sort((a,b)=>b.localeCompare(a));
+  for(let i=0;i<dates.length;i++){
+    if(dates[i]===check){streak++;const d=new Date(check);d.setDate(d.getDate()-1);check=d.toISOString().split('T')[0];}else break;
+  }
+  document.getElementById('sc-streak').textContent=streak+' day streak 🔥';
+
+  const avg=total?Math.round(entries.reduce((s,e)=>s+(e.score||0),0)/total):0;
+  document.getElementById('sm-avg').textContent=avg;
+  const best=total?Math.max(...entries.map(e=>e.score||0)):0;
+  document.getElementById('sm-best').textContent=best;
+  const yogaDone=entries.filter(e=>e.taps&&e.taps.yoga==='done').length;
+  document.getElementById('sm-yoga').textContent=total?Math.round((yogaDone/total)*100)+'%':'0%';
+}
+
+function renderTargets(){
+  function render(list,elId,ref){
+    const el=document.getElementById(elId);if(!el)return;
+    const done=list.filter(t=>t.done).length;
+    const pct=list.length?Math.round((done/list.length)*100):0;
+    const fc=pct===100?'var(--teal)':pct>50?'var(--amber)':'var(--red)';
+    el.innerHTML=`<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:4px"><span>${done}/${list.length} done</span><span style="color:var(--teal);font-weight:600">${pct}%</span></div>
+    <div class="prog-wrap"><div class="prog-fill" style="width:${pct}%;background:${fc}"></div></div>`+
+    list.map(t=>`<div class="tgt-item">
+      <div class="tgt-check ${t.done?'done':''}" onclick="toggleTarget(${ref},'${t.id}')">${t.done?'✓':''}</div>
+      <div><div class="tgt-name ${t.done?'done':''}">${t.text}</div><div class="tgt-sub">${t.sub}</div></div>
+    </div>`).join('');
+  }
+  render(daily,'daily-tgt','daily');
+  render(weekly,'weekly-tgt','weekly');
+  render(monthly,'monthly-tgt','monthly');
+}
+
+function renderHistory(){
+  const el=document.getElementById('history-list');
+  if(!entries.length){el.innerHTML='<div style="font-size:13px;color:var(--text3);padding:10px 0">No entries yet. Start logging today!</div>';return;}
+  el.innerHTML=entries.slice(0,12).map(e=>{
+    const sc=e.score||0;
+    const [sc_bg,sc_c]=sc>=70?['var(--teal-bg2)','var(--teal)']:sc>=40?['var(--amber-bg)','var(--amber)']:['var(--red-bg)','var(--red)'];
+    const t=e.taps||{};
+    const badges=[
+      t.yoga==='done'?'Yoga':'',
+      t.meditation==='done'?'Meditated':'',
+      t.reading==='1hr+'?'Read 1h+':'',
+      t.biz&&t.biz!=='none'?'Agri biz':'',
+      t.jk&&t.jk!=='none'?'Jivakalpa':'',
+    ].filter(Boolean);
+    const d=new Date(e.date);
+    const dl=d.toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'});
+    return`<div class="log-entry">
+      <div class="log-top">
+        <div class="log-date">${dl} · Day ${e.day||'—'}</div>
+        <div class="log-score" style="background:${sc_bg};color:${sc_c}">${sc} pts</div>
+      </div>
+      ${badges.length?`<div class="log-badges">${badges.map(b=>`<span class="badge">${b}</span>`).join('')}</div>`:''}
+      ${e.notes&&e.notes.learn?`<div class="log-lesson">💡 ${e.notes.learn.slice(0,110)}${e.notes.learn.length>110?'...':''}</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+function renderHeatmap(){
+  const el=document.getElementById('heatmap');if(!el)return;
+  const today=new Date();let html='';
+  for(let i=29;i>=0;i--){
+    const d=new Date(today);d.setDate(d.getDate()-i);
+    const key=d.toISOString().split('T')[0];
+    const entry=entries.find(e=>e.date===key);
+    let color='var(--bg3)';
+    if(entry){
+      const t=entry.taps||{};
+      const n=[t.yoga==='done',t.meditation==='done',t.reading==='1hr+'||t.reading==='30min'].filter(Boolean).length;
+      color=n===3?'var(--teal)':n>=1?'var(--amber)':'var(--red)';
+    }
+    const lbl=d.toLocaleDateString('en-IN',{month:'short',day:'numeric'});
+    html+=`<div class="hm-cell" style="background:${color}" title="${lbl}"></div>`;
+  }
+  el.innerHTML=html;
+}
+
+function showTab(name){
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach((b,i)=>b.classList.toggle('active',['log','targets','jivakalpa','history','settings'][i]===name));
+  document.querySelectorAll('.bnav-btn').forEach((b,i)=>b.classList.toggle('active',['log','targets','jivakalpa','history','settings'][i]===name));
+}
+
+
+function saveScriptUrl() {
+  const url = document.getElementById('settings-url').value.trim();
+  if(!url || !url.includes('script.google.com')) {
+    document.getElementById('conn-status').style.color='var(--red)';
+    document.getElementById('conn-status').textContent='Please paste a valid Google Apps Script URL';
+    return;
+  }
+  scriptUrl = url;
+  lsSet(SKEY, url);
+  document.getElementById('conn-status').style.color='var(--teal)';
+  document.getElementById('conn-status').textContent='Connected successfully ✓';
+  updateSettingsUI();
+}
+
+async function testConnection() {
+  if(!scriptUrl) {
+    document.getElementById('sheet-status').textContent='No URL connected yet. Paste your URL above first.';
+    document.getElementById('sheet-status').style.color='var(--red)';
+    return;
+  }
+  document.getElementById('sheet-status').textContent='Testing connection...';
+  document.getElementById('sheet-status').style.color='var(--text2)';
+  try {
+    await fetch(scriptUrl, {method:'GET', mode:'no-cors'});
+    document.getElementById('sheet-status').textContent='Connection working ✓ Google Sheet is receiving data.';
+    document.getElementById('sheet-status').style.color='var(--teal)';
+  } catch(e) {
+    document.getElementById('sheet-status').textContent='Connection failed. Check your URL and deployment settings.';
+    document.getElementById('sheet-status').style.color='var(--red)';
+  }
+}
+
+async function syncAll() {
+  if(!scriptUrl) {
+    document.getElementById('sync-msg').textContent='Connect Google Sheets first.';
+    return;
+  }
+  if(!entries.length) {
+    document.getElementById('sync-msg').textContent='No local entries to sync.';
+    return;
+  }
+  document.getElementById('sync-msg').textContent='Syncing '+entries.length+' entries...';
+  let success = 0;
+  for(const entry of entries) {
+    try {
+      await fetch(scriptUrl, {
+        method:'POST', mode:'no-cors',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({action:'log', entry})
+      });
+      success++;
+    } catch(e) {}
+  }
+  document.getElementById('sync-msg').textContent='Synced '+success+'/'+entries.length+' entries to Google Sheet ✓';
+}
+
+function updateSettingsUI() {
+  const url = lsGet(SKEY,'') || '';
+  const urlInput = document.getElementById('settings-url');
+  if(urlInput && url) urlInput.value = url;
+  const badge = document.getElementById('connected-badge');
+  if(badge) { badge.textContent = url ? 'Yes ✓' : 'No'; badge.style.color = url ? 'var(--teal)' : 'var(--red)'; }
+  const lc = document.getElementById('local-count');
+  if(lc) lc.textContent = entries.length;
+}
+
+
+function clearForm() {
+  // Clear all chip selections
+  document.querySelectorAll('.chip').forEach(c => c.className = 'chip');
+  // Clear all textareas and inputs
+  ['n-goals','n-fire','n-drain','n-learn','n-agri','n-jk'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.value = '';
+  });
+  const loc = document.getElementById('n-loc');
+  if(loc) loc.value = '';
+  // Reset taps
+  taps = {};
+  updateScoreArc();
+}
+
+function init(){
+  // Check if already set up
+  scriptUrl=lsGet(SKEY,'')||'';
+  document.getElementById('setup-overlay').classList.add('hidden');
+
+  // Date + day
+  const now=new Date();
+  document.getElementById('top-date').textContent=now.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'});
+  document.getElementById('sc-date').textContent=now.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('day-num').textContent=getJourneyDay();
+
+  // Quote
+  const qi=now.getDate()%QUOTES.length;
+  document.getElementById('q-text').textContent=QUOTES[qi].q;
+  document.getElementById('q-attr').textContent='— '+QUOTES[qi].a;
+
+  // Load data
+  entries=lsGet(EKEY,[]);
+  const saved=lsGet(TKEY,null);
+  daily=saved?saved.daily:JSON.parse(JSON.stringify(D_DAILY));
+  weekly=saved?saved.weekly:JSON.parse(JSON.stringify(D_WEEKLY));
+  monthly=saved?saved.monthly:JSON.parse(JSON.stringify(D_MONTHLY));
+
+  // Restore today if already logged
+  const te=entries.find(e=>e.date===getToday());
+  if(te){
+    taps={...te.taps};
+    ['goals','fire','drain','learn','agri'].forEach(k=>{
+      const el=document.getElementById('n-'+k);
+      if(el&&te.notes&&te.notes[k])el.value=te.notes[k];
+    });
+    if(te.notes){
+      if(te.notes.loc)document.getElementById('n-loc').value=te.notes.loc;
+      if(te.notes.jk)document.getElementById('n-jk').value=te.notes.jk;
+    }
+  }
+
+  renderStats();renderTargets();renderHistory();renderHeatmap();updateSettingsUI();
+}
+
+init();
+</script>
+</body>
+</html>
